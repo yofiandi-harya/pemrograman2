@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports
+              http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+              name="LaporanMahasiswa"
+              pageWidth="842" pageHeight="595"
+              orientation="Landscape"
+              columnWidth="782"
+              leftMargin="30" rightMargin="30"
+              topMargin="20" bottomMargin="20"
+              uuid="a1b2c3d4-0001-0001-0001-000000000001">
+
+    <!-- Query SQL ke database -->
+    <queryString>
+        <![CDATA[SELECT id, nim, nama, jurusan, ipk FROM mahasiswa ORDER BY id]]>
+    </queryString>
+
+    <!-- Definisi kolom dari hasil query -->
+    <field name="id"      class="java.lang.Integer"/>
+    <field name="nim"     class="java.lang.String"/>
+    <field name="nama"    class="java.lang.String"/>
+    <field name="jurusan" class="java.lang.String"/>
+    <field name="ipk"     class="java.lang.Double"/>
+
+    <!-- Variabel nomor urut -->
+    <variable name="ROW_NUMBER" class="java.lang.Integer"
+              calculation="Count">
+        <variableExpression><![CDATA[$V{ROW_NUMBER}]]></variableExpression>
+    </variable>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!--  TITLE — judul laporan                      -->
+    <!-- ═══════════════════════════════════════════ -->
+    <title>
+        <band height="60">
+            <!-- Kotak latar judul -->
+            <rectangle>
+                <reportElement x="0" y="0" width="782" height="50" backcolor="#1A3A5C" forecolor="#1A3A5C"/>
+                <graphicElement>
+                    <pen lineWidth="0"/>
+                </graphicElement>
+            </rectangle>
+            <!-- Teks judul -->
+            <staticText>
+                <reportElement x="0" y="0" width="782" height="50"
+                               forecolor="#FFFFFF" backcolor="#1A3A5C" mode="Opaque"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font fontName="SansSerif" size="18" isBold="true"/>
+                </textElement>
+                <text><![CDATA[LAPORAN DATA MAHASISWA]]></text>
+            </staticText>
+        </band>
+    </title>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!--  PAGE HEADER — header kolom tabel           -->
+    <!-- ═══════════════════════════════════════════ -->
+    <pageHeader>
+        <band height="30">
+            <!-- Background header -->
+            <rectangle>
+                <reportElement x="0" y="0" width="782" height="30" backcolor="#2E75B6" forecolor="#2E75B6"/>
+                <graphicElement><pen lineWidth="0"/></graphicElement>
+            </rectangle>
+
+            <!-- NO -->
+            <staticText>
+                <reportElement x="0"   y="0" width="40"  height="30" forecolor="#FFFFFF" backcolor="#2E75B6" mode="Opaque"/>
+                <box><pen lineWidth="0.5" lineColor="#FFFFFF"/></box>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font fontName="SansSerif" size="10" isBold="true"/>
+                </textElement>
+                <text><![CDATA[NO]]></text>
+            </staticText>
+
+            <!-- NIM -->
+            <staticText>
+                <reportElement x="40"  y="0" width="110" height="30" forecolor="#FFFFFF" backcolor="#2E75B6" mode="Opaque"/>
+                <box><pen lineWidth="0.5" lineColor="#FFFFFF"/></box>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font fontName="SansSerif" size="10" isBold="true"/>
+                </textElement>
+                <text><![CDATA[NIM]]></text>
+            </staticText>
+
+            <!-- NAMA -->
+            <staticText>
+                <reportElement x="150" y="0" width="230" height="30" forecolor="#FFFFFF" backcolor="#2E75B6" mode="Opaque"/>
+                <box><pen lineWidth="0.5" lineColor="#FFFFFF"/></box>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font fontName="SansSerif" size="10" isBold="true"/>
+                </textElement>
+                <text><![CDATA[NAMA]]></text>
+            </staticText>
+
+            <!-- JURUSAN -->
+            <staticText>
+                <reportElement x="380" y="0" width="282" height="30" forecolor="#FFFFFF" backcolor="#2E75B6" mode="Opaque"/>
+                <box><pen lineWidth="0.5" lineColor="#FFFFFF"/></box>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font fontName="SansSerif" size="10" isBold="true"/>
+                </textElement>
+                <text><![CDATA[JURUSAN]]></text>
+            </staticText>
+
+            <!-- IPK -->
+            <staticText>
+                <reportElement x="662" y="0" width="120" height="30" forecolor="#FFFFFF" backcolor="#2E75B6" mode="Opaque"/>
+                <box><pen lineWidth="0.5" lineColor="#FFFFFF"/></box>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font fontName="SansSerif" size="10" isBold="true"/>
+                </textElement>
+                <text><![CDATA[IPK]]></text>
+            </staticText>
+        </band>
+    </pageHeader>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!--  DETAIL — baris data per mahasiswa          -->
+    <!-- ═══════════════════════════════════════════ -->
+    <detail>
+        <band height="25">
+            <!-- Warna selang-seling baris (putih) -->
+            <rectangle>
+                <reportElement x="0" y="0" width="782" height="25"
+                               backcolor="#FFFFFF" forecolor="#CCCCCC"
+                               style="OddRow"/>
+                <graphicElement><pen lineWidth="0.3"/></graphicElement>
+            </rectangle>
+
+            <!-- NO (nomor urut) -->
+            <textField>
+                <reportElement x="0"   y="0" width="40"  height="25"/>
+                <box><pen lineWidth="0.3" lineColor="#CCCCCC"/></box>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font fontName="SansSerif" size="10"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+            </textField>
+
+            <!-- NIM -->
+            <textField>
+                <reportElement x="40"  y="0" width="110" height="25"/>
+                <box><pen lineWidth="0.3" lineColor="#CCCCCC"/></box>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font fontName="SansSerif" size="10"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{nim}]]></textFieldExpression>
+            </textField>
+
+            <!-- NAMA -->
+            <textField>
+                <reportElement x="150" y="0" width="230" height="25"/>
+                <box><pen lineWidth="0.3" lineColor="#CCCCCC"/></box>
+                <textElement textAlignment="Left" verticalAlignment="Middle">
+                    <font fontName="SansSerif" size="10"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{nama}]]></textFieldExpression>
+            </textField>
+
+            <!-- JURUSAN -->
+            <textField>
+                <reportElement x="380" y="0" width="282" height="25"/>
+                <box><pen lineWidth="0.3" lineColor="#CCCCCC"/></box>
+                <textElement textAlignment="Left" verticalAlignment="Middle">
+                    <font fontName="SansSerif" size="10"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{jurusan}]]></textFieldExpression>
+            </textField>
+
+            <!-- IPK -->
+            <textField pattern="0.00">
+                <reportElement x="662" y="0" width="120" height="25"/>
+                <box><pen lineWidth="0.3" lineColor="#CCCCCC"/></box>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font fontName="SansSerif" size="10"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{ipk}]]></textFieldExpression>
+            </textField>
+        </band>
+    </detail>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!--  PAGE FOOTER — nomor halaman                -->
+    <!-- ═══════════════════════════════════════════ -->
+    <pageFooter>
+        <band height="25">
+            <line>
+                <reportElement x="0" y="0" width="782" height="1" forecolor="#2E75B6"/>
+            </line>
+            <textField>
+                <reportElement x="0" y="5" width="782" height="18" forecolor="#555555"/>
+                <textElement textAlignment="Right">
+                    <font fontName="SansSerif" size="9"/>
+                </textElement>
+                <textFieldExpression><![CDATA["Halaman " + $V{PAGE_NUMBER} + " dari " + $V{PAGE_COUNT}]]></textFieldExpression>
+            </textField>
+        </band>
+    </pageFooter>
+
+</jasperReport>
