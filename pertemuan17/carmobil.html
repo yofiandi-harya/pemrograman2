@@ -1,0 +1,360 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rental Mobil - Mohamad Kendis Prasetya</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#f4f6f9;
+    padding:20px;
+}
+
+.header{
+    background:#1e3a8a;
+    color:white;
+    padding:20px;
+    border-radius:10px;
+    margin-bottom:20px;
+}
+
+.header h1{
+    margin-bottom:10px;
+}
+
+.container{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+}
+
+.card{
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.1);
+}
+
+.card h2{
+    margin-bottom:15px;
+    color:#1e3a8a;
+}
+
+input,select{
+    width:100%;
+    padding:10px;
+    margin-bottom:10px;
+    border:1px solid #ccc;
+    border-radius:5px;
+}
+
+button{
+    background:#2563eb;
+    color:white;
+    border:none;
+    padding:10px 20px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#1d4ed8;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:15px;
+}
+
+table th{
+    background:#2563eb;
+    color:white;
+}
+
+table th,table td{
+    border:1px solid #ddd;
+    padding:8px;
+    text-align:center;
+}
+
+.full{
+    grid-column:1/3;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+    <h1>APLIKASI RENTAL MOBIL</h1>
+    <h3>MOHAMAD KENDIS PRASETYA</h3>
+    <h3>231011401659</h3>
+</div>
+
+<div class="container">
+
+<div class="card">
+<h2>Data Mobil</h2>
+
+<input type="text" id="plat" placeholder="Plat Nomor">
+<input type="text" id="merk" placeholder="Merk Mobil">
+<input type="number" id="tahun" placeholder="Tahun">
+<input type="number" id="harga" placeholder="Harga Sewa/Hari">
+
+<button onclick="tambahMobil()">Simpan Mobil</button>
+
+<table>
+<thead>
+<tr>
+<th>Plat</th>
+<th>Merk</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody id="tblMobil"></tbody>
+</table>
+
+</div>
+
+<div class="card">
+
+<h2>Data Customer</h2>
+
+<input type="text" id="nik" placeholder="NIK">
+<input type="text" id="nama" placeholder="Nama Customer">
+<input type="text" id="telp" placeholder="No Telepon">
+<input type="text" id="alamat" placeholder="Alamat">
+
+<button onclick="tambahCustomer()">Simpan Customer</button>
+
+<table>
+<thead>
+<tr>
+<th>NIK</th>
+<th>Nama</th>
+</tr>
+</thead>
+<tbody id="tblCustomer"></tbody>
+</table>
+
+</div>
+
+<div class="card full">
+
+<h2>Transaksi Penyewaan</h2>
+
+<select id="customerSelect"></select>
+
+<select id="mobilSelect"></select>
+
+<input type="date" id="tglSewa">
+<input type="date" id="tglKembali">
+
+<button onclick="transaksi()">Proses Sewa</button>
+
+<table>
+<thead>
+<tr>
+<th>Customer</th>
+<th>Mobil</th>
+<th>Tgl Sewa</th>
+<th>Tgl Kembali</th>
+</tr>
+</thead>
+
+<tbody id="tblTransaksi"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<script>
+
+let mobil=[];
+let customer=[];
+let transaksiData=[];
+
+function tambahMobil(){
+
+let plat=document.getElementById("plat").value;
+let merk=document.getElementById("merk").value;
+let tahun=document.getElementById("tahun").value;
+let harga=document.getElementById("harga").value;
+
+if(!plat||!merk||!tahun||!harga){
+alert("Lengkapi data mobil");
+return;
+}
+
+mobil.push({
+plat,
+merk,
+tahun,
+harga,
+status:"Tersedia"
+});
+
+renderMobil();
+
+document.getElementById("plat").value="";
+document.getElementById("merk").value="";
+document.getElementById("tahun").value="";
+document.getElementById("harga").value="";
+}
+
+function renderMobil(){
+
+let html="";
+let option="";
+
+mobil.forEach((m,index)=>{
+
+html+=`
+<tr>
+<td>${m.plat}</td>
+<td>${m.merk}</td>
+<td>${m.status}</td>
+</tr>
+`;
+
+if(m.status=="Tersedia"){
+option+=`
+<option value="${index}">
+${m.plat} - ${m.merk}
+</option>
+`;
+}
+
+});
+
+document.getElementById("tblMobil").innerHTML=html;
+document.getElementById("mobilSelect").innerHTML=option;
+}
+
+function tambahCustomer(){
+
+let nik=document.getElementById("nik").value;
+let nama=document.getElementById("nama").value;
+let telp=document.getElementById("telp").value;
+let alamat=document.getElementById("alamat").value;
+
+if(!nik||!nama||!telp||!alamat){
+alert("Lengkapi data customer");
+return;
+}
+
+customer.push({
+nik,nama,telp,alamat
+});
+
+renderCustomer();
+
+document.getElementById("nik").value="";
+document.getElementById("nama").value="";
+document.getElementById("telp").value="";
+document.getElementById("alamat").value="";
+}
+
+function renderCustomer(){
+
+let html="";
+let option="";
+
+customer.forEach((c,index)=>{
+
+html+=`
+<tr>
+<td>${c.nik}</td>
+<td>${c.nama}</td>
+</tr>
+`;
+
+option+=`
+<option value="${index}">
+${c.nama}
+</option>
+`;
+
+});
+
+document.getElementById("tblCustomer").innerHTML=html;
+document.getElementById("customerSelect").innerHTML=option;
+}
+
+function transaksi(){
+
+if(customer.length==0){
+alert("Belum ada customer");
+return;
+}
+
+if(mobil.length==0){
+alert("Belum ada mobil");
+return;
+}
+
+let c=document.getElementById("customerSelect").value;
+let m=document.getElementById("mobilSelect").value;
+
+let tglSewa=document.getElementById("tglSewa").value;
+let tglKembali=document.getElementById("tglKembali").value;
+
+if(!tglSewa||!tglKembali){
+alert("Isi tanggal");
+return;
+}
+
+if(tglKembali < tglSewa){
+alert("Tanggal kembali tidak valid");
+return;
+}
+
+mobil[m].status="Disewa";
+
+transaksiData.push({
+customer:customer[c].nama,
+mobil:mobil[m].merk,
+tglSewa,
+tglKembali
+});
+
+renderTransaksi();
+renderMobil();
+}
+
+function renderTransaksi(){
+
+let html="";
+
+transaksiData.forEach(t=>{
+
+html+=`
+<tr>
+<td>${t.customer}</td>
+<td>${t.mobil}</td>
+<td>${t.tglSewa}</td>
+<td>${t.tglKembali}</td>
+</tr>
+`;
+
+});
+
+document.getElementById("tblTransaksi").innerHTML=html;
+}
+
+</script>
+
+</body>
+</html>
+```
