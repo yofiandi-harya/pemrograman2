@@ -1,0 +1,387 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Grade Dashboard</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    min-height:100vh;
+    background:#050816;
+    overflow-x:hidden;
+}
+
+body::before{
+    content:'';
+    position:fixed;
+    width:500px;
+    height:500px;
+    background:#00f5ff;
+    filter:blur(250px);
+    top:-150px;
+    left:-150px;
+    opacity:.25;
+}
+
+body::after{
+    content:'';
+    position:fixed;
+    width:500px;
+    height:500px;
+    background:#ff00c8;
+    filter:blur(250px);
+    bottom:-150px;
+    right:-150px;
+    opacity:.25;
+}
+
+.container{
+    width:95%;
+    max-width:1300px;
+    margin:auto;
+    padding:30px 0;
+}
+
+.topbar{
+    background:rgba(255,255,255,0.05);
+    backdrop-filter:blur(20px);
+    border:1px solid rgba(255,255,255,.1);
+    border-radius:25px;
+    padding:25px;
+    color:white;
+    margin-bottom:25px;
+}
+
+.topbar h1{
+    font-size:35px;
+    color:#00f5ff;
+}
+
+.identity{
+    margin-top:10px;
+    color:#d1d5db;
+    line-height:30px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:380px 1fr;
+    gap:25px;
+}
+
+.panel{
+    background:rgba(255,255,255,.05);
+    border:1px solid rgba(255,255,255,.1);
+    backdrop-filter:blur(20px);
+    border-radius:25px;
+    padding:25px;
+}
+
+.panel h2{
+    color:white;
+    margin-bottom:20px;
+}
+
+.input-group{
+    margin-bottom:15px;
+}
+
+.input-group label{
+    color:#cbd5e1;
+    display:block;
+    margin-bottom:6px;
+}
+
+.input-group input{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:12px;
+    background:#0f172a;
+    color:white;
+}
+
+.btn{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:12px;
+    background:linear-gradient(135deg,#00f5ff,#0077ff);
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.btn:hover{
+    transform:translateY(-3px);
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+    margin-bottom:20px;
+}
+
+.card{
+    background:#0f172a;
+    padding:20px;
+    border-radius:18px;
+    text-align:center;
+}
+
+.card h3{
+    color:#94a3b8;
+    font-size:14px;
+}
+
+.card span{
+    display:block;
+    color:#00f5ff;
+    font-size:28px;
+    font-weight:bold;
+    margin-top:8px;
+}
+
+.table-box{
+    overflow:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    color:white;
+}
+
+th{
+    background:#0f172a;
+    padding:15px;
+}
+
+td{
+    padding:12px;
+    text-align:center;
+    border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.gradeA{color:#22c55e;font-weight:bold;}
+.gradeB{color:#3b82f6;font-weight:bold;}
+.gradeC{color:#f59e0b;font-weight:bold;}
+.gradeD,.gradeE{color:#ef4444;font-weight:bold;}
+
+.delete{
+    background:#ef4444;
+    border:none;
+    color:white;
+    padding:8px 14px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+@media(max-width:900px){
+.grid{
+grid-template-columns:1fr;
+}
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="topbar">
+    <h1>SMART GRADE DASHBOARD</h1>
+
+    <div class="identity">
+        <strong>NAMA :</strong> YOFIANDI HARYA<br>
+        <strong>NIM :</strong> 231011401899
+    </div>
+</div>
+
+<div class="grid">
+
+<div class="panel">
+    <h2>Input Nilai Mahasiswa</h2>
+
+    <div class="input-group">
+        <label>NIM</label>
+        <input type="text" id="nim">
+    </div>
+
+    <div class="input-group">
+        <label>Nama Mahasiswa</label>
+        <input type="text" id="nama">
+    </div>
+
+    <div class="input-group">
+        <label>Nilai Tugas</label>
+        <input type="number" id="tugas">
+    </div>
+
+    <div class="input-group">
+        <label>Nilai UTS</label>
+        <input type="number" id="uts">
+    </div>
+
+    <div class="input-group">
+        <label>Nilai UAS</label>
+        <input type="number" id="uas">
+    </div>
+
+    <button class="btn" onclick="simpanData()">
+        SIMPAN DATA
+    </button>
+</div>
+
+<div class="panel">
+
+<div class="stats">
+
+<div class="card">
+    <h3>Total Data</h3>
+    <span id="totalData">0</span>
+</div>
+
+<div class="card">
+    <h3>Rata-rata</h3>
+    <span id="rata">0</span>
+</div>
+
+<div class="card">
+    <h3>Grade A</h3>
+    <span id="gradeA">0</span>
+</div>
+
+</div>
+
+<div class="table-box">
+
+<table>
+
+<thead>
+<tr>
+<th>No</th>
+<th>NIM</th>
+<th>Nama</th>
+<th>Akhir</th>
+<th>Grade</th>
+<th>Aksi</th>
+</tr>
+</thead>
+
+<tbody id="dataTable"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+let mahasiswa=[];
+
+function getGrade(nilai){
+    if(nilai>=85) return "A";
+    if(nilai>=75) return "B";
+    if(nilai>=65) return "C";
+    if(nilai>=50) return "D";
+    return "E";
+}
+
+function simpanData(){
+
+let nim=document.getElementById('nim').value;
+let nama=document.getElementById('nama').value;
+let tugas=parseFloat(document.getElementById('tugas').value);
+let uts=parseFloat(document.getElementById('uts').value);
+let uas=parseFloat(document.getElementById('uas').value);
+
+if(!nim||!nama||isNaN(tugas)||isNaN(uts)||isNaN(uas)){
+alert("Lengkapi data terlebih dahulu");
+return;
+}
+
+let akhir=((tugas*30)+(uts*30)+(uas*40))/100;
+let grade=getGrade(akhir);
+
+mahasiswa.push({
+nim,nama,akhir:akhir.toFixed(2),grade
+});
+
+render();
+
+document.getElementById('nim').value="";
+document.getElementById('nama').value="";
+document.getElementById('tugas').value="";
+document.getElementById('uts').value="";
+document.getElementById('uas').value="";
+}
+
+function render(){
+
+let html="";
+let total=0;
+let jumlahA=0;
+
+mahasiswa.forEach((m,i)=>{
+
+total+=parseFloat(m.akhir);
+
+if(m.grade=="A") jumlahA++;
+
+html+=`
+<tr>
+<td>${i+1}</td>
+<td>${m.nim}</td>
+<td>${m.nama}</td>
+<td>${m.akhir}</td>
+<td class="grade${m.grade}">${m.grade}</td>
+<td>
+<button class="delete" onclick="hapus(${i})">
+Hapus
+</button>
+</td>
+</tr>
+`;
+
+});
+
+document.getElementById('dataTable').innerHTML=html;
+
+document.getElementById('totalData').innerHTML=mahasiswa.length;
+
+document.getElementById('rata').innerHTML=
+mahasiswa.length?
+(total/mahasiswa.length).toFixed(1):0;
+
+document.getElementById('gradeA').innerHTML=jumlahA;
+}
+
+function hapus(index){
+mahasiswa.splice(index,1);
+render();
+}
+
+</script>
+
+</body>
+</html>
+```
